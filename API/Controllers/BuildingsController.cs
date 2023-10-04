@@ -69,18 +69,16 @@ namespace API.Controllers
             var save = await _saveRep.GetAsync(saveId);
             if (save == null)
                 return NotFound();
-            throw new NotImplementedException();
 
-            //var saveDB = await _repository.GetAsync(id);
+            var building = await _buildingRep.GetAsync(saveId, id);
+            if (building == null)
+                return NotFound();
 
-            //if (saveDB == null)
-            //    return NotFound();
+            building.Level = buildingDTO.level;
+            building.Name = buildingDTO.name;
 
-            //saveDB.Money = save.money;
-            //saveDB.Created = DateTime.UtcNow;
-
-            //await _repository.UpdateAsync(saveDB);
-            //return Ok(new SaveDTO(saveDB.Id, saveDB.Money, saveDB.Created));
+            await _buildingRep.UpdateAsync(building);
+            return Ok(new BuildingDTO(building.Id, building.Level, building.Name, building.Save.Id));
         }
 
         [HttpDelete]
@@ -90,16 +88,14 @@ namespace API.Controllers
             var save = await _saveRep.GetAsync(saveId);
             if (save == null)
                 return NotFound();
-            throw new NotImplementedException();
 
-            //var saveDB = await _repository.GetAsync(id);
+            var building = await _buildingRep.GetAsync(saveId, id);
+            if (building == null)
+                return NotFound();
 
-            //if (saveDB == null)
-            //    return NotFound();
+            await _buildingRep.DeleteAsync(building);
 
-            //await _repository.DeleteAsync(saveDB);
-
-            //return NoContent();
+            return NoContent();
         }
     }
 }
