@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<GameDbContext>();
 builder.Services.AddTransient<ISaveRepository, SaveRepository>();
 builder.Services.AddTransient<IBuildingRepository, BuildingRepository>();
+builder.Services.AddTransient<IWorkerRepository, WorkerRepository>();
 
 var app = builder.Build();
 
