@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.Data.Entities
 {
-    public class Building
+    public class Building : IUserOwnedResource
     {
 
         [Key]
@@ -13,6 +13,12 @@ namespace API.Data.Entities
         public string Name { get; set; }
         public int Level { get; set; }
 
+        [Required]
+        public int SaveId { get; set; }
+        [Required]
         public Save Save { get; set; }
+
+        public string OwnerId { get; set; }
+        public GameUser Owner { get; set; }
     }
 }

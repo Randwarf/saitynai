@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    partial class GameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231025080523_identity and cascade delete")]
+    partial class identityandcascadedelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,16 +40,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("SaveId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.HasIndex("SaveId");
 
@@ -160,15 +157,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BuildingId");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Workers");
                 });
@@ -307,19 +298,11 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Data.Entities.Building", b =>
                 {
-                    b.HasOne("API.Data.Entities.GameUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API.Data.Entities.Save", "Save")
                         .WithMany()
                         .HasForeignKey("SaveId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Owner");
 
                     b.Navigation("Save");
                 });
@@ -343,15 +326,7 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Data.Entities.GameUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Building");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
