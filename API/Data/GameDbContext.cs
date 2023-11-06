@@ -6,13 +6,19 @@ namespace API.Data
 {
     public class GameDbContext : IdentityDbContext<GameUser>
     {
+        private readonly IConfiguration _configuration;
         public DbSet<Save> Saves { get; set; }
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Worker> Workers { get; set; }
 
+        public GameDbContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Game;Username=postgres;Password=postgres");
+            optionsBuilder.UseNpgsql(_configuration.GetValue<string>("PostgreSQLConnectionString"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

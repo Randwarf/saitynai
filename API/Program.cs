@@ -9,6 +9,7 @@ using API.Auth;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,7 +65,11 @@ app.UseStaticFiles(new StaticFileOptions()
         Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot"))
 });
 
-//var dbSeeder = app.Services.CreateScope().ServiceProvider.GetRequiredService<AuthDbSeeder>();
-//await dbSeeder.SeedAsync();
+using var scope = app.Services.CreateScope();
+var dbContext =scope.ServiceProvider.GetRequiredService<GameDbContext>();
+dbContext.Database.Migrate();
+
+var dbSeeder = app.Services.CreateScope().ServiceProvider.GetRequiredService<AuthDbSeeder>();
+await dbSeeder.SeedAsync();
 
 app.Run();
