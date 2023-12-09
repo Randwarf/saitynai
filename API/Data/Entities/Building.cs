@@ -9,6 +9,10 @@ namespace API.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
+        public int X { get; set; }
+        [Required]
+        public int Y { get; set; }
 
         public string Name { get; set; }
         public int Level { get; set; }
