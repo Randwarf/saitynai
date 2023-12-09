@@ -34,7 +34,7 @@ namespace API.Controllers
 
             var buildings = await _buildingRep.GetAllAsync(saveId);
             return Ok(buildings.Where(building => building.OwnerId == User.FindFirstValue(JwtRegisteredClaimNames.Sub))
-                .Select(x => new BuildingDTO(x.Id, x.Level, x.Name, x.Save.Id)));
+                .Select(x => new BuildingDTO(x.Id, x.Level, x.Name, x.Save.Id, x.X, x.Y)));
         }
 
         [HttpGet]
@@ -54,7 +54,7 @@ namespace API.Controllers
             if (!authResult.Succeeded)
                 return NotFound();
 
-            return new BuildingDTO(building.Id, building.Level, building.Name, building.Save.Id);
+            return new BuildingDTO(building.Id, building.Level, building.Name, building.Save.Id, building.X, building.Y);
         }
 
         [HttpPost]
@@ -74,7 +74,7 @@ namespace API.Controllers
             };
 
             await _buildingRep.CreateAsync(buildingDB);
-            return Created("", new BuildingDTO(buildingDB.Id, buildingDB.Level, buildingDB.Name, buildingDB.Save.Id));
+            return Created("", new BuildingDTO(buildingDB.Id, buildingDB.Level, buildingDB.Name, buildingDB.Save.Id, buildingDB.X, buildingDB.Y));
         }
 
         [HttpPut]
@@ -98,7 +98,7 @@ namespace API.Controllers
             building.Name = buildingDTO.name;
 
             await _buildingRep.UpdateAsync(building);
-            return Ok(new BuildingDTO(building.Id, building.Level, building.Name, building.Save.Id));
+            return Ok(new BuildingDTO(building.Id, building.Level, building.Name, building.Save.Id, building.X, building.Y));
         }
 
         [HttpDelete]
