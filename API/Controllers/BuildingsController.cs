@@ -71,6 +71,8 @@ namespace API.Controllers
                 Level = buildingDTO.level,
                 Save = save,
                 OwnerId = User.FindFirstValue(JwtRegisteredClaimNames.Sub),
+                X= buildingDTO.X,
+                Y= buildingDTO.Y
             };
 
             await _buildingRep.CreateAsync(buildingDB);
