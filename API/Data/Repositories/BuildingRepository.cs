@@ -27,7 +27,7 @@ namespace API.Data.Repositories
         public async Task<IReadOnlyList<Building>> GetAllAsync(int saveId)
         {
             var buildings = await _dbContext.Buildings.ToListAsync();
-            return buildings.Where(building => building.Save.Id == saveId).ToList();
+            return buildings.Where(building => building.SaveId == saveId).ToList();
         }
 
         public async Task<Building?> GetAsync(int saveId, int id)
